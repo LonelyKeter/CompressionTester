@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompressionTester.Client", "CompressionTester.Client\CompressionTester.Client.csproj", "{3B7A7791-1DD3-42E1-B92E-6967D2D17B9A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompressionTester", "CompressionTester\CompressionTester.csproj", "{161BA173-4C5F-4699-B51B-F38B928B159B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3B7A7791-1DD3-42E1-B92E-6967D2D17B9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B7A7791-1DD3-42E1-B92E-6967D2D17B9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B7A7791-1DD3-42E1-B92E-6967D2D17B9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B7A7791-1DD3-42E1-B92E-6967D2D17B9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{161BA173-4C5F-4699-B51B-F38B928B159B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{161BA173-4C5F-4699-B51B-F38B928B159B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{161BA173-4C5F-4699-B51B-F38B928B159B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{161BA173-4C5F-4699-B51B-F38B928B159B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {16B9D027-0658-4132-9DBD-FE9398DF3D0A}
+	EndGlobalSection
+EndGlobal
