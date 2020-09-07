@@ -16,6 +16,15 @@ namespace CompressionTester
             value = pair.Value;
         }
 
+        //Dictionary
+        public static void Update<TKey, TValue>(this IDictionary<TKey, TValue> target, IEnumerable<KeyValuePair<TKey, TValue>> source)
+        {
+            foreach (var (key, value) in source)
+            {
+                target[key] = value;
+            }
+        }
+
         //StringBuilder
         public static StringBuilder AppendRange(this StringBuilder builder, IEnumerable<string> values)
         {

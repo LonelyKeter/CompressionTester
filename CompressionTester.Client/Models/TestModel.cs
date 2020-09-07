@@ -42,6 +42,8 @@ namespace CompressionTester.Client.Models
                 .SetAlgorithm(AlgorithmKey)
                 .TestViceVersa(_project.Hierarchy, tags);
         }
+
+        public void GetSourceNames()
         
         
         public static TestModel Open(string path, string compressorPath)

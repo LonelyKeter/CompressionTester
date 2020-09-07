@@ -9,22 +9,20 @@ namespace CompressionTester
 {
     public class Statistics : ICloneable
     {
-        private List<StatisticsItem> _items = new List<StatisticsItem>();
-        public IEnumerable<StatisticsItem> Items => _items;
+        private Dictionary<string, StatisticsItem> _items = new Dictionary<string, StatisticsItem>();
+        public IEnumerable<StatisticsItem> Items => _items.Values;
 
-        public void AddItem(in StatisticsItem item)
+
+
+        public void AddItem(StatisticsItem item)
         {
-            _items.Add(item);
+            _items[item.Name] = item;
         }
 
-        public void Append(IEnumerable<StatisticsItem> statisticItems)
+        public void Update(IEnumerable<StatisticsItem> statisticItems)
         {
-            _items.AddRange(statisticItems);
-        }
-        public void Append(Statistics statistics)
-        {
-            _items.AddRange(statistics._items);
-        }
+            _items.Update(statisticItems.Select(item => new KeyValuePair<string, StatisticsItem>(item.Name, item)));
+        }        
 
         public void Clear()
         {
@@ -34,8 +32,7 @@ namespace CompressionTester
         public object Clone()
         {
             var copy = new Statistics();
-            copy._items = new List<StatisticsItem>(_items.Capacity);
-            copy._items.AddRange(this._items);
+            copy._items = new Dictionary<string, StatisticsItem>(_items);
             return copy;
         }
     }

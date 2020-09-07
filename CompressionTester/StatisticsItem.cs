@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CompressionTester
 {
-    public readonly struct StatisticsItem
+    public class StatisticsItem
     {
         public readonly string Name;
 

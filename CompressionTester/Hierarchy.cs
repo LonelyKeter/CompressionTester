@@ -19,15 +19,15 @@ namespace CompressionTester
         {
             RootDir = CreateOrGetDirInfo(rootPath);
 
-            SourceDir = CreateOrGetDirInfo(rootPath + "\\src");
-            CompressDir= CreateOrGetDirInfo(rootPath + "\\comp");
-            RestoreDir = CreateOrGetDirInfo(rootPath + "\\rest");
+            SourceDir = CreateOrGetDirInfo(Path.Combine(rootPath , "src"));
+            CompressDir= CreateOrGetDirInfo(Path.Combine(rootPath, "comp"));
+            RestoreDir = CreateOrGetDirInfo(Path.Combine(rootPath, "rest"));
         }
 
-        public void AddToSources(string sourcePath, string distName)
+        public void AddToSources(string sourcePath, string distName, string extension)
         {
             var sourceInfo = new FileInfo(sourcePath);
-            var distInfo = new FileInfo(SourceDir.FullName + "\\" + distName + "\\.bm");
+            var distInfo = new FileInfo(Path.Combine(SourceDir.FullName, distName + extension));
 
             if (distInfo.Exists)
             {
@@ -37,23 +37,22 @@ namespace CompressionTester
             sourceInfo.CopyTo(distInfo.FullName);
         }
 
-        public FileInfo GetSource(string name)
-        {
-            return new FileInfo(SourceDir.FullName + "\\" + name + "\\.bm");
-        }
-        public IEnumerable<FileInfo> GetSources(IEnumerable<string> names)
-        {
-            return names.Select(GetSource);
-        }
+        public FileInfo GetSource(string fileName)
+            => new FileInfo(Path.Combine(SourceDir.FullName, fileName + ".bm"));
+        
+        public IEnumerable<FileInfo> GetSources(IEnumerable<string> fileNames)
+            => fileNames.Select(GetSource);
 
-        public FileInfo GetCompressed(string name, string ext)
-        {
-            return new FileInfo(SourceDir.FullName + "\\" + name + "\\.bm");
-        }
-        public IEnumerable<FileInfo> GetCompressed(IEnumerable<string> names, string ext)
-        {
-            return names.Select(name => GetCompressed(name, ext));
-        }
+        public IEnumerable<FileInfo> GetSources()
+            => Directory
+                .GetFiles(SourceDir.FullName)
+                .Select(fileName => new FileInfo(fileName));
+
+        public FileInfo GetCompressed(string name, string ext) 
+            => new FileInfo(Path.Combine(SourceDir.FullName, name + ext));        
+
+        public IEnumerable<FileInfo> GetCompressed(IEnumerable<string> names, string ext) 
+            => names.Select(name => GetCompressed(name, ext));
 
         private static DirectoryInfo CreateOrGetDirInfo(string path)
         {

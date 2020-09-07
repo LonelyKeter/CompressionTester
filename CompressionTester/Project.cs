@@ -17,6 +17,8 @@ namespace CompressionTester
         private ProjectFile _projectFile;
         private Statistics _statistics;
 
+        private HashSet<string> _sourceTags;
+
         private Project(
             Hierarchy hierarchy, 
             Statistics statistics, 
@@ -27,11 +29,49 @@ namespace CompressionTester
             _projectFile = projectFile;
 
             Title = _projectFile.Title;
+
+            _sourceTags = new HashSet<string>();
         }
 
         public Statistics GetStatistics() => (Statistics)_statistics.Clone();
 
+        public void AddSource(string filePath)
+            => AddSource(new FileInfo(filePath));
+        public void AddSource(FileInfo fileInfo)
+        {
+            Assert.FileExists(fileInfo);
 
+            var tag = CreateSourceTag(fileInfo);
+            Hierarchy.AddToSources(fileInfo.FullName, tag, ".bm");
+            _sourceTags.Add(tag);
+        }
+
+        public void AddSources(IEnumerable<string> filePaths)
+            => AddSources(filePaths.Select(path => new FileInfo(path)));
+        public void AddSources(IEnumerable<FileInfo> fileInfos)
+        {
+            foreach (var info in fileInfos)
+            {
+                AddSource(info);
+            }
+        }
+
+        private string CreateSourceTag(FileInfo sourceInfo)
+        {
+            var tag = Path.GetFileNameWithoutExtension(sourceInfo.Name);
+            var dirInfo = sourceInfo.Directory;
+            
+            while (_sourceTags.Contains(tag))
+            {
+                tag = dirInfo.Name + "_" + "tag";
+                dirInfo = dirInfo.Parent;
+            }
+
+            return tag;
+        }
+
+
+        #region Static creation
         public static Project Create(string dirPath, string name)
             => Create(new DirectoryInfo(dirPath), name);
 
@@ -56,6 +96,18 @@ namespace CompressionTester
             var statistics = new Statistics();
 
             return new Project(hierarchy, statistics, projectFile);
+        }
+        #endregion //Static creation
+
+        private static class Assert
+        {
+            public static void FileExists(FileInfo fileInfo)
+            {
+                if (!fileInfo.Exists)
+                {
+                    throw new ArgumentException("Specified file should exist");
+                }
+            }
         }
     }
 }

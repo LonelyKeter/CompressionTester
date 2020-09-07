@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using CompressionTester.Client.Models;
 
 namespace CompressionTester.Client.ViewModels
@@ -39,10 +41,37 @@ namespace CompressionTester.Client.ViewModels
             Sources = new ObservableDictionary<string, Source>(_testModel.GetSources());
         }
 
-        private void StartTest();
-        private void AddSources();
-        private void RemoveResources();
-        private void ClearStatistics();
+        private IList CreateBindings() => new[]
+        {
+            new CommandBinding(TestCommands.StartTest, StartTest, StartTestCanExecute),
+            new CommandBinding(TestCommands.AddSources, AddSources, AddSourcesCanExecute),
+            new CommandBinding(TestCommands.RemoveSources, RemoveSources, RemoveSourcesCanExecute),
+            new CommandBinding(TestCommands.ClearStatistics, ClearStatistics, ClearStatisticsCanExecute)
+        };
+
+        private void StartTest(object sender, RoutedEventArgs args)
+        {
+            throw new NotImplementedException("Start test feature is not implemented.");
+        }
+        private void StartTestCanExecute(object sender, CanExecuteRoutedEventArgs args) => args.CanExecute = true;
+
+        private void AddSources(object sender, RoutedEventArgs args)
+        {
+            throw new NotImplementedException("Add sources feature is not implemented.");
+        }
+        private void AddSourcesCanExecute(object sender, CanExecuteRoutedEventArgs args) => args.CanExecute = true;
+
+        private void RemoveSources(object sender, RoutedEventArgs args)
+        {
+            throw new NotImplementedException("Remove sources feature is not implemented.");
+        }
+        private void RemoveSourcesCanExecute(object sender, CanExecuteRoutedEventArgs args) => args.CanExecute = true;
+
+        private void ClearStatistics(object sender, RoutedEventArgs args)
+        {
+            throw new NotImplementedException("Clear statistics feature is not implemented.");
+        }
+        private void ClearStatisticsCanExecute(object sender, CanExecuteRoutedEventArgs args) => args.CanExecute = true;
 
         private static class Assert
         {
