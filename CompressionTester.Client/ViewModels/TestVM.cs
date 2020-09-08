@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Collections.ObjectModel;
 using CompressionTester.Client.Models;
 
 namespace CompressionTester.Client.ViewModels
@@ -14,6 +15,8 @@ namespace CompressionTester.Client.ViewModels
     public class TestVM : DependencyObject
     {
         private TestModel _testModel;
+
+        public IList CommandBindings { get; }
 
         public Image SourcePreview      
         {
@@ -32,22 +35,30 @@ namespace CompressionTester.Client.ViewModels
             DependencyProperty.Register("RestoredPreview", typeof(Image), typeof(TestVM), new PropertyMetadata(null));
 
         public ObservableDictionary<string, Source> Sources { get; }
+        public ObservableCollection<Source> SelectedSources
 
         public TestVM(TestModel testModel)
         {
             Assert.TestModelIsNotNull(testModel);
 
             _testModel = testModel;
-            Sources = new ObservableDictionary<string, Source>(_testModel.GetSources());
+            var tagSources = _testModel
+                .GetSourceTags()
+                .ToDictionary(key => key, name => new Source(name));
+
+            Sources = new ObservableDictionary<string, Source>(tagSources);
+
+            CommandBindings = CreateBindings();
         }
 
-        private IList CreateBindings() => new[]
-        {
-            new CommandBinding(TestCommands.StartTest, StartTest, StartTestCanExecute),
-            new CommandBinding(TestCommands.AddSources, AddSources, AddSourcesCanExecute),
-            new CommandBinding(TestCommands.RemoveSources, RemoveSources, RemoveSourcesCanExecute),
-            new CommandBinding(TestCommands.ClearStatistics, ClearStatistics, ClearStatisticsCanExecute)
-        };
+        private IList CreateBindings() 
+            => new[] 
+            {
+                new CommandBinding(TestCommands.StartTest, StartTest, StartTestCanExecute),
+                new CommandBinding(TestCommands.AddSources, AddSources, AddSourcesCanExecute),
+                new CommandBinding(TestCommands.RemoveSources, RemoveSources, RemoveSourcesCanExecute),
+                new CommandBinding(TestCommands.ClearStatistics, ClearStatistics, ClearStatisticsCanExecute)
+            };
 
         private void StartTest(object sender, RoutedEventArgs args)
         {

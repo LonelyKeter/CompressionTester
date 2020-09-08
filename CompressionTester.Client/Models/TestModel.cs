@@ -43,7 +43,9 @@ namespace CompressionTester.Client.Models
                 .TestViceVersa(_project.Hierarchy, tags);
         }
 
-        public void GetSourceNames()
+        public IEnumerable<string> GetSourceTags()
+            => _project.SourceTags;
+        
         
         
         public static TestModel Open(string path, string compressorPath)

@@ -57,6 +57,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Behaviours\MutiselectSelectedItemsBehaviour.cs" />
     <Compile Include="Dialog.cs" />
     <Compile Include="Models\Source.cs" />
     <Compile Include="TestCommands.cs" />
@@ -157,7 +158,10 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="AttachedProperties\" />
+    <Folder Include="Commands\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CompressionTester\CompressionTester.csproj">
       <Project>{161ba173-4c5f-4699-b51b-f38b928b159b}</Project>

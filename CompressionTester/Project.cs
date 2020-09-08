@@ -10,6 +10,8 @@ namespace CompressionTester
 {
     public class Project
     {
+        private static string _tagSeparator = "_";
+
         public string Title { get; private set; }
 
         public Hierarchy Hierarchy { get; private set; }
@@ -17,7 +19,8 @@ namespace CompressionTester
         private ProjectFile _projectFile;
         private Statistics _statistics;
 
-        private HashSet<string> _sourceTags;
+        private Dictionary<string, FileInfo> _sources;
+        public IEnumerable<string> SourceTags => _sources.Keys;
 
         private Project(
             Hierarchy hierarchy, 
@@ -30,20 +33,23 @@ namespace CompressionTester
 
             Title = _projectFile.Title;
 
-            _sourceTags = new HashSet<string>();
+            _sources = new Dictionary<string, FileInfo>();
+
+            AddSources(Hierarchy.GetSources());
         }
 
-        public Statistics GetStatistics() => (Statistics)_statistics.Clone();
+        public Statistics GetStatistics() => _statistics.Clone() as Statistics;
 
         public void AddSource(string filePath)
             => AddSource(new FileInfo(filePath));
         public void AddSource(FileInfo fileInfo)
         {
             Assert.FileExists(fileInfo);
+            Assert.SourceDoesNotContain(fileInfo, _sources);
 
             var tag = CreateSourceTag(fileInfo);
             Hierarchy.AddToSources(fileInfo.FullName, tag, ".bm");
-            _sourceTags.Add(tag);
+            _sources.Add(tag, fileInfo);
         }
 
         public void AddSources(IEnumerable<string> filePaths)
@@ -63,7 +69,7 @@ namespace CompressionTester
             
             while (_sourceTags.Contains(tag))
             {
-                tag = dirInfo.Name + "_" + "tag";
+                tag = dirInfo.Name + _tagSeparator + "tag";
                 dirInfo = dirInfo.Parent;
             }
 
@@ -106,6 +112,14 @@ namespace CompressionTester
                 if (!fileInfo.Exists)
                 {
                     throw new ArgumentException("Specified file should exist");
+                }
+            }
+
+            public static void SourceDoesNotContain(FileInfo info, Dictionary<string, FileInfo> sources)
+            {
+                if (sources.ContainsValue(info))
+                {
+                    throw new ArgumentException("File is already included as source");
                 }
             }
         }

@@ -8,6 +8,11 @@ namespace CompressionTester.Client.Models
 {
     public class Source
     {
-        public string Name { get; set; }
+        public string Name { get; private set; }
+
+        public Source(string name)
+        {
+            Name = name;
+        }
     }
 }
